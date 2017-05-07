@@ -1,18 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import AuthService from '../util/AuthService';
 
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 
+const auth = new AuthService('lrbZmg5KoIKqvQo9H8yW6VSsuMdREglX', 'wyzhu.auth0.com');
+
 export default class Header extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
+    auth: React.PropTypes.instanceOf(AuthService),
   };
 
   constructor(props) {
     super(props);
-    this.state = { open: false }
+    this.state = { 
+      open: false,
+    }
     this.handleClose = this.handleClose.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
   }
@@ -58,6 +63,14 @@ export default class Header extends React.Component {
             onTouchTap={this.handleClose}
             containerElement={<Link to="/job-entry" />}
             primaryText="Job Entry"
+          />
+          <MenuItem 
+            onTouchTap={auth.login.bind(this)}
+            primaryText="Login"
+          />
+          <MenuItem 
+            onTouchTap={auth.logout.bind(this)}
+            primaryText="Logout"
           />
         </Drawer>
       </div>
